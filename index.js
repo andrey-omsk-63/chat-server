@@ -35,7 +35,7 @@ io.on('connection', (socket) => {
 
     socket.emit('message', {
       //data: { user: { name: "Admin" }, message: userMessage },
-      data: { user: { name: 'Admin' }, message: `Hey my love ${name}` },
+      data: { user: { name: 'Admin' }, message: `Hey mister ${name}` },
     });
 
     socket.broadcast.to(user.room).emit('message', {
@@ -76,7 +76,6 @@ io.on('connection', (socket) => {
   });
 });
 
-//server.listen(5000, () => {
-app.listen(5000, () => {
+server.listen(5000, () => {
   console.log('Server is running');
 });

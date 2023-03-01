@@ -22,7 +22,7 @@ const io = new Server(server, {
 io.on("connection", (socket) => {
   socket.on("join", ({ name, room }) => {
     socket.join(room);
-
+console.log('join(room)', room)
     const { user, isExist } = addUser({ name, room });
 
     const userMessage = isExist

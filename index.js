@@ -22,7 +22,7 @@ const io = new Server(server, {
 io.on("connection", (socket) => {
   socket.on("join", ({ name, room }) => {
     socket.join(room);
-console.log('join(room)', room)
+    console.log("join(room)", room);
     const { user, isExist } = addUser({ name, room });
 
     const userMessage = isExist
@@ -34,6 +34,7 @@ console.log('join(room)', room)
         user: { name: "ChatAdmin" },
         message: userMessage,
         date: new Date(),
+        to: room,
       },
     });
 
@@ -41,6 +42,8 @@ console.log('join(room)', room)
       data: {
         user: { name: "ChatAdmin" },
         message: `${user.name} присоеденился`,
+        date: new Date(),
+        to: user.room,
       },
     });
 
@@ -49,11 +52,11 @@ console.log('join(room)', room)
     });
   });
 
-  socket.on("sendMessage", ({ message, params, date }) => {
+  socket.on("sendMessage", ({ message, params, date, to }) => {
     const user = findUser(params);
 
     if (user) {
-      io.to(user.room).emit("message", { data: { user, message, date } });
+      io.to(user.room).emit("message", { data: { user, message, date, to } });
     }
   });
 
@@ -64,7 +67,12 @@ console.log('join(room)', room)
       const { room, name } = user;
 
       io.to(room).emit("message", {
-        data: { user: { name: "ChatAdmin" }, message: `${name} вышел` },
+        data: {
+          user: { name: "ChatAdmin" },
+          message: `${name} вышел`,
+          date: new Date(),
+          to: room,
+        },
       });
 
       io.to(room).emit("room", {

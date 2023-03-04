@@ -53,15 +53,15 @@ io.on('connection', (socket) => {
   });
 
   socket.on('sendMessage', ({ message, params, date }) => {
-    //const user = findUser(params);
-    let user = params;
+    const user = findUser(params);
+    //let user = params;
     let to = params.room;
     console.log('sendMessage', user, message, date, to);
 
-    io.to(user.room).emit('message', { data: { user, message, date, to } });
-    // if (user) {
     //io.to(user.room).emit('message', { data: { user, message, date, to } });
-    //}
+    if (user) {
+      io.to(user.room).emit('message', { data: { user, message, date, to } });
+    }
   });
 
   socket.on('leftRoom', ({ params }) => {
@@ -93,4 +93,3 @@ io.on('connection', (socket) => {
 server.listen(5000, () => {
   console.log('Сервер работает');
 });
-

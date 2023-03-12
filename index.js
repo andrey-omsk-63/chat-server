@@ -22,30 +22,29 @@ const io = new Server(server, {
 io.on('connection', (socket) => {
   socket.on('join', ({ name, room }) => {
     socket.join(room);
-    //console.log('join(room)', room);
     const { user, isExist } = addUser({ name, room });
 
     const userMessage = isExist
       ? `${user.name}, и снова здравствуйте`
       : `Здравствуйте, ${user.name}`;
 
-    socket.emit('message', {
-      data: {
-        user: { name: 'ChatAdmin' },
-        message: userMessage,
-        date: new Date(),
-        to: room,
-      },
-    });
+    // socket.emit('message', {
+    //   data: {
+    //     user: { name: 'ChatAdmin' },
+    //     message: userMessage,
+    //     date: new Date(),
+    //     to: room,
+    //   },
+    // });
 
-    socket.broadcast.to(user.room).emit('message', {
-      data: {
-        user: { name: 'ChatAdmin' },
-        message: `${user.name} присоеденился`,
-        date: new Date(),
-        to: user.room,
-      },
-    });
+    // socket.broadcast.to(user.room).emit('message', {
+    //   data: {
+    //     user: { name: 'ChatAdmin' },
+    //     message: `${user.name} присоеденился`,
+    //     date: new Date(),
+    //     to: user.room,
+    //   },
+    // });
 
     io.to(user.room).emit('room', {
       data: { users: getRoomUsers(user.room) },
@@ -53,6 +52,7 @@ io.on('connection', (socket) => {
   });
 
   socket.on('sendMessage', ({ message, params, date }) => {
+    //console.log('sendMessage_params', message, params, date);
     //const user = findUser(params);
     let user = params;
     let to = params.room;
@@ -70,14 +70,14 @@ io.on('connection', (socket) => {
     if (user) {
       const { room, name } = user;
 
-      io.to(room).emit('message', {
-        data: {
-          user: { name: 'ChatAdmin' },
-          message: `${name} вышел`,
-          date: new Date(),
-          to: room,
-        },
-      });
+      // io.to(room).emit('message', {
+      //   data: {
+      //     user: { name: 'ChatAdmin' },
+      //     message: `${name} вышел`,
+      //     date: new Date(),
+      //     to: room,
+      //   },
+      // });
 
       io.to(room).emit('room', {
         data: { users: getRoomUsers(room) },

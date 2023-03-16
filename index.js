@@ -56,10 +56,10 @@ io.on('connection', (socket) => {
     //const user = findUser(params);
     let user = params;
     let to = params.room;
-    console.log('sendMessage', user, message, date, to);
 
     //io.to(user.room).emit('message', { data: { user, message, date, to } });
     if (user) {
+      console.log('sendMessage', user, message, date, to);
       io.to(user.room).emit('message', { data: { user, message, date, to } });
     }
   });

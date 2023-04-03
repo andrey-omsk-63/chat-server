@@ -52,7 +52,7 @@ io.on('connection', (socket) => {
   });
 
   socket.on('sendMessage', ({ message, params, date }) => {
-    //console.log('sendMessage_params', message, params, date);
+    console.log('sendMessage_params', message, params, date);
     //const user = findUser(params);
     let user = params;
     let to = params.room;
